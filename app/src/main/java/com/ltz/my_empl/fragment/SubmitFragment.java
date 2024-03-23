@@ -39,9 +39,9 @@ import java.util.Objects;
 
 public class SubmitFragment extends BaseFragment {
 
-    private String[] type = {""};
-    private String[] province = {""};
-    private String[] city = {"请先选择省份"};
+    private String[] type;
+    private String[] province;
+    private String[] city;
     private String[] t_province;
     private String[] t_city;
     private Map<String, Object> province_city = new HashMap<>();
@@ -376,9 +376,7 @@ public class SubmitFragment extends BaseFragment {
                 StandInfoResponse response = new Gson().fromJson(res, StandInfoResponse.class);
                 type = response.getData().getStandInfo().getCompany_type().toArray(new String[0]);
                 t_province = response.getData().getStandInfo().getProvince().toArray(new String[0]);
-                ;
                 t_city = response.getData().getStandInfo().getCity().toArray(new String[0]);
-                ;
                 province = Arrays.stream(t_province)
                         .distinct()
                         .toArray(String[]::new);
