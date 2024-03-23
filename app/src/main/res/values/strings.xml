@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">就业与资讯</string>
+    <string name="desc">描述</string>
+    <string name="hint">按要求输入</string>
+    <string name="text_login">就业信息上报，就业资讯阅览</string>
+    <string name="username_hint">请输入账号</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="search_hint">搜索感兴趣的就业资讯</string>
+    <string name="login">登录</string>
+    <string name="home">首页</string>
+    <string name="home_search">搜索</string>
+    <string name="home_title">就业资讯：</string>
+    <string name="last_update">最后更新时间：</string>
+    <string name="submit">上报</string>
+    <string name="submit_btn">提交</string>
+    <string name="submit_title">就业信息上报</string>
+    <string name="tip_title">上报自己的就业信息</string>
+    <string name="tip_content">注意：签约单位类别（“读研”也作为一种特殊类别）、是否读研（读研也算就业）。</string>
+    <string name="check_result">审核结果</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="postgraduate">读研</string>
+    <string name="on_time">按时就业</string>
+    <string name="within_two">毕业两年内就业</string>
+    <string name="company_name">签约单位全称</string>
+    <string name="company_type">签约单位类别</string>
+    <string name="company_province">签约单位所在省</string>
+    <string name="company_city">签约单位所在市</string>
+    <string name="sign_date">签约日期</string>
+    <string name="select_data">请选择日期</string>
+    <string name="mine">我的</string>
+    <string name="welcome">生活愉快，天天开心</string>
+    <string name="name">姓名</string>
+    <string name="gender">性别</string>
+    <string name="student_id">学号</string>
+    <string name="grade">年级</string>
+    <string name="department">院系</string>
+    <string name="major">专业</string>
+    <string name="mine_one">便捷链接</string>
+    <string name="mine_two">关于APP</string>
+    <string name="logout">退出登录</string>
+
+</resources>

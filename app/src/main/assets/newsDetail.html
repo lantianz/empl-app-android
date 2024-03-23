@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>资讯详情</title>
+    <link href="./css/style.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        function updateData(jsonData) {
+	        var data = jsonData;
+            document.getElementById('news-title').innerHTML = data.title;
+            document.getElementById('author').innerHTML = data.author;
+            document.getElementById('time').innerHTML = data.sendTime;
+            document.getElementById('content').innerHTML = data.content;
+        }
+        function backPage() {
+            back.back();
+        }
+
+
+    </script>
+</head>
+<body>
+<!-- 头部 -->
+<img alt="back" class="back-icon" onclick="backPage()" src="./img/back.png"></img>
+<div class="header">
+    <h1 class="title">资讯详情</h1>
+</div>
+
+<!-- 内容 -->
+<div class="news-detail">
+    <div class="box-card">
+        <h1 class="news-title" id="news-title">新闻标题</h1>
+    </div>
+    <hr>
+    <div class="box-card">
+        <div class="author">作者：<span id="author">作者姓名</span></div>
+        <div class="time">最后更新时间：<span id="time">最后更新时间</span></div>
+    </div>
+    <div class="box-card">
+        <div class="w-e-text" id="content">
+            内容
+        </div>
+    </div>
+</div>
+</body>
+</html>
