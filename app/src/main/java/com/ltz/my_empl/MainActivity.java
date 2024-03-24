@@ -16,15 +16,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.ltz.my_empl.api.Api;
 import com.ltz.my_empl.api.ApiConfig;
 import com.ltz.my_empl.api.Callback;
 import com.ltz.my_empl.entity.LoginResponse;
+import com.ltz.my_empl.entity.StandInfoResponse;
 import com.ltz.my_empl.util.StatusBar;
 import com.ltz.my_empl.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.Call;
 
@@ -46,8 +53,28 @@ public class MainActivity extends AppCompatActivity {
         StatusBar.setStatusBarTransparent(this);
         StatusBar.setStatusBarLightMode(this, isLightMode);
 
+        // 获取标准信息
+        getStandardInfo(new StandardInfoCallback() {
+            @Override
+            public void onStandardInfoReceived(String[] types, String[] provinces, String[] citys, Map<String, String[]> provinceCityMap) {
+                String strType = String.join(",", types);
+                String strProvince = String.join(",", provinces);
+                String strCity = String.join(",", citys);
+                String strProvinceCity = JSON.toJSONString(provinceCityMap);
+                insertVal("type", strType);
+                insertVal("province", strProvince);
+                insertVal("city", strCity);
+                insertVal("provinceCity", strProvinceCity);
+            }
+
+            @Override
+            public void onFailure(Exception error) {
+                // 处理失败情况
+            }
+        });
+
         // 是否有token
-        if (!StringUtils.isEmpty(getStringFromSp("token"))) {
+        if (!StringUtils.isEmpty(findByKey("token"))) {
             startActivity(new Intent(MainActivity.this, HomeActivity.class));
             finish();
         }
@@ -152,9 +179,61 @@ public class MainActivity extends AppCompatActivity {
         return !TextUtils.isEmpty(password) && password.length() >= 6;
     }
 
+    public interface StandardInfoCallback {
+        void onStandardInfoReceived(String[] types, String[] provinces, String[] citys, Map<String, String[]> provinceCityMap);
 
-    protected String getStringFromSp(String key) {
+        void onFailure(Exception error);
+    }
+
+    public void getStandardInfo(final StandardInfoCallback callback) {
+        Api.config(ApiConfig.STAND_INFO, null).getRequest(this, new Callback() {
+
+            @Override
+            public void onSuccess(String res) {
+                StandInfoResponse response = new Gson().fromJson(res, StandInfoResponse.class);
+                String[] type = response.getData().getStandInfo().getCompany_type().toArray(new String[0]);
+                String[] t_province = response.getData().getStandInfo().getProvince().toArray(new String[0]);
+                String[] t_city = response.getData().getStandInfo().getCity().toArray(new String[0]);
+                String[] province = Arrays.stream(t_province)
+                        .distinct()
+                        .toArray(String[]::new);
+                String[] city = Arrays.stream(t_city)
+                        .distinct()
+                        .toArray(String[]::new);
+                Map<String, String[]> province_city = new HashMap<>();
+                // 遍历每个省份
+                for (String p : province) {
+                    List<String> citiesForProvince = new ArrayList<>();
+                    // 遍历每个城市列表，寻找属于当前省份的城市
+                    for (int i = 0; i < t_province.length; i++) {
+                        if (Objects.equals(p, t_province[i])) {
+                            citiesForProvince.add(t_city[i]);
+                        }
+                    }
+                    // 将该省份的城市列表转换为数组，并放入 Map 中
+                    province_city.put(p, citiesForProvince.toArray(new String[0]));
+                }
+                // 通过回调传递获取的数据
+                callback.onStandardInfoReceived(type, province, city, province_city);
+            }
+
+            @Override
+            public void onFailure(Exception error) {
+                // 通过回调传递失败信息
+                callback.onFailure(error);
+            }
+        });
+    }
+
+    protected String findByKey(String key) {
         SharedPreferences sp = getSharedPreferences("sp_config", MODE_PRIVATE);
         return sp.getString(key, "");
+    }
+
+    protected void insertVal(String key, String value) {
+        SharedPreferences sp = getSharedPreferences("sp_config", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key, value);
+        editor.apply();
     }
 }

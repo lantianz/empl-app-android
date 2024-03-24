@@ -4,8 +4,16 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("D:\\Android\\key.jks")
+            storePassword = "20021104"
+            keyAlias = "key0"
+            keyPassword = "20021104"
+        }
+    }
     namespace = "com.ltz.my_empl"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.ltz.my_empl"
@@ -24,6 +32,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -35,15 +44,15 @@ android {
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.squareup.okhttp3:okhttp:3.10.0")
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("com.squareup.picasso:picasso:2.5.2")
+    implementation("com.squareup.picasso:picasso:2.71828")
     implementation("androidx.appcompat:appcompat:1.6.1")
 
     implementation("io.github.scwang90:refresh-layout-kernel:2.1.0")
@@ -51,7 +60,7 @@ dependencies {
     implementation("io.github.scwang90:refresh-footer-ball:2.1.0")
     implementation("io.github.scwang90:refresh-footer-classics:2.1.0")
 
-    implementation("com.alibaba:fastjson:1.2.76")
+    implementation("com.alibaba:fastjson:2.0.47")
 
 
 }

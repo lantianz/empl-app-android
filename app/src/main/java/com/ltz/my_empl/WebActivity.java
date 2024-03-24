@@ -39,7 +39,6 @@ public class WebActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         // 踩坑：name不能用大写字母
         webView.addJavascriptInterface(new Back(), "back");
-        System.out.println("Already");
         //是否支持缩放
         webView.getSettings().setSupportZoom(false);
         //加载网页
@@ -67,7 +66,6 @@ public class WebActivity extends AppCompatActivity {
     class Back {
         @JavascriptInterface
         public void back() {
-            System.out.println("JS调用了back函数");
             finish();
         }
     }

@@ -59,7 +59,7 @@ public class MySpinnerAdapter extends BaseAdapter {
     }
 
     //新建ViewHolder内部类，用来定义我们行布局中所用到的控件
-    static class ViewHolder {
+    class ViewHolder {
         private TextView select_item;
     }
 }

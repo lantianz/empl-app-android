@@ -57,7 +57,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         vh.author.setText(newsEntity.getAuthor());
         vh.send_time.setText(newsEntity.getSendTime());
         vh.newsEntity = newsEntity;
-        Picasso.with(mContext)
+        Picasso.get()
                 .load(ApiConfig.BASE_URL + ApiConfig.FILE_DOWNLOAD + newsEntity.getFrontImg())
                 .into(vh.front_img);
     }
