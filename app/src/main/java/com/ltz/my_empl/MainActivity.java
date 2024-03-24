@@ -54,24 +54,27 @@ public class MainActivity extends AppCompatActivity {
         StatusBar.setStatusBarLightMode(this, isLightMode);
 
         // 获取标准信息
-        getStandardInfo(new StandardInfoCallback() {
-            @Override
-            public void onStandardInfoReceived(String[] types, String[] provinces, String[] citys, Map<String, String[]> provinceCityMap) {
-                String strType = String.join(",", types);
-                String strProvince = String.join(",", provinces);
-                String strCity = String.join(",", citys);
-                String strProvinceCity = JSON.toJSONString(provinceCityMap);
-                insertVal("type", strType);
-                insertVal("province", strProvince);
-                insertVal("city", strCity);
-                insertVal("provinceCity", strProvinceCity);
-            }
+        if (StringUtils.isEmpty(findByKey("type")) || StringUtils.isEmpty(findByKey("province")) ||
+                StringUtils.isEmpty(findByKey("city")) || StringUtils.isEmpty(findByKey("provinceCity"))) {
+            getStandardInfo(new StandardInfoCallback() {
+                @Override
+                public void onStandardInfoReceived(String[] types, String[] provinces, String[] citys, Map<String, String[]> provinceCityMap) {
+                    String strType = String.join(",", types);
+                    String strProvince = String.join(",", provinces);
+                    String strCity = String.join(",", citys);
+                    String strProvinceCity = JSON.toJSONString(provinceCityMap);
+                    insertVal("type", strType);
+                    insertVal("province", strProvince);
+                    insertVal("city", strCity);
+                    insertVal("provinceCity", strProvinceCity);
+                }
 
-            @Override
-            public void onFailure(Exception error) {
-                // 处理失败情况
-            }
-        });
+                @Override
+                public void onFailure(Exception error) {
+                    // 处理失败情况
+                }
+            });
+        }
 
         // 是否有token
         if (!StringUtils.isEmpty(findByKey("token"))) {
