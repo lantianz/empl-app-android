@@ -45,8 +45,8 @@ public class MineFragment extends BaseFragment {
                 "https://www.baidu.com",
                 "https://www.bilibili.com",
                 "https://sso-443.webvpn.gxnu.edu.cn",
-                "http://www.dean.gxnu.edu.cn/",
-                "https://co2.cnki.net/"
+                "http://www.dean.gxnu.edu.cn",
+                "http://gxnu.co.cnki.net"
         };
 
         final String[] names = {
@@ -87,7 +87,7 @@ public class MineFragment extends BaseFragment {
 
         String introduction =
                 "这是一个毕业生就业信息管理系统学生端的APP。" +
-                        "阅览相关的、感兴趣的就业咨询；" +
+                        "阅览相关的、感兴趣的就业资讯；" +
                         "提交就业信息到Web管理端。";
 
         builder.setMessage(introduction);

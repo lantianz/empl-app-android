@@ -35,15 +35,15 @@ public class WebActivity extends AppCompatActivity {
         WebChromeClient webChromeClient = new WebChromeClient();
         webView.setWebChromeClient(webChromeClient);
 
-        //设置开启js支持
+        // 设置开启js支持
         webView.getSettings().setJavaScriptEnabled(true);
         // 踩坑：name不能用大写字母
         webView.addJavascriptInterface(new Back(), "back");
-        //是否支持缩放
+        // 是否支持缩放
         webView.getSettings().setSupportZoom(false);
-        //加载网页
+        // 加载网页
         webView.loadUrl("file:///android_asset/newsDetail.html");
-
+        // 获取首页传来的详细资讯数据
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             jsonData = bundle.getString("jsonData");
