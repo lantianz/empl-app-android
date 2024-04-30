@@ -36,7 +36,8 @@ public class Api {
     public static Api config(String url, HashMap<String, Object> params) {
         client = new OkHttpClient.Builder()
                 .build();
-        requestUrl = ApiConfig.BASE_URL + url;
+        requestUrl = ApiConfig.BASE_URL("1") + url;
+        System.out.println("requestUrl = " + requestUrl);
         requestParams = params;
         return api;
     }

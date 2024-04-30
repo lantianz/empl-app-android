@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -239,6 +241,12 @@ public class SubmitFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
+
+                if (TextUtils.isEmpty(companyName) || TextUtils.isEmpty(companyType) || TextUtils.isEmpty(companyProvince) || TextUtils.isEmpty(companyCity) || TextUtils.isEmpty(signDate) || TextUtils.isEmpty(postgraduate)){
+                    Toast.makeText(getContext(), "请将信息填写完整", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String status = "waiting";
                 HashMap<String, Object> params = new HashMap<String, Object>();
                 params.put("studentId", studentId);

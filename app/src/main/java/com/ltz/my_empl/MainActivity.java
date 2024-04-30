@@ -1,5 +1,7 @@
 package com.ltz.my_empl;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,45 +39,24 @@ import java.util.Objects;
 import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static Context sContext;
     private boolean isHide = false;
     private EditText etUsername;
     private EditText etPassword;
     private ImageView ivShowPwd;
     private boolean isLightMode = true;
     private Button btnLogin;
+    private TextView tvChangeIP;
     private Call call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sContext = getApplicationContext();
 
         StatusBar.setStatusBarTransparent(this);
         StatusBar.setStatusBarLightMode(this, isLightMode);
-
-        // 获取标准信息
-        if (StringUtils.isEmpty(findByKey("type")) || StringUtils.isEmpty(findByKey("province")) ||
-                StringUtils.isEmpty(findByKey("city")) || StringUtils.isEmpty(findByKey("provinceCity"))) {
-            getStandardInfo(new StandardInfoCallback() {
-                @Override
-                public void onStandardInfoReceived(String[] types, String[] provinces, String[] citys, Map<String, String[]> provinceCityMap) {
-                    String strType = String.join(",", types);
-                    String strProvince = String.join(",", provinces);
-                    String strCity = String.join(",", citys);
-                    String strProvinceCity = JSON.toJSONString(provinceCityMap);
-                    insertVal("type", strType);
-                    insertVal("province", strProvince);
-                    insertVal("city", strCity);
-                    insertVal("provinceCity", strProvinceCity);
-                }
-
-                @Override
-                public void onFailure(Exception error) {
-                    // 处理失败情况
-                }
-            });
-        }
 
         // 是否有token
         if (!StringUtils.isEmpty(findByKey("token"))) {
@@ -102,6 +84,65 @@ public class MainActivity extends AppCompatActivity {
                 login(username, password);
             }
         });
+        // 更改IP按钮监听
+        tvChangeIP = findViewById(R.id.tv_changeIP);
+        tvChangeIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeIPDialog(MainActivity.this, new Runnable() {
+                    @Override
+                    public void run() {
+                        // 获取标准信息
+                        if (StringUtils.isEmpty(findByKey("type")) || StringUtils.isEmpty(findByKey("province")) ||
+                                StringUtils.isEmpty(findByKey("city")) || StringUtils.isEmpty(findByKey("provinceCity"))) {
+                            getStandardInfo(new StandardInfoCallback() {
+                                @Override
+                                public void onStandardInfoReceived(String[] types, String[] provinces, String[] citys, Map<String, String[]> provinceCityMap) {
+                                    String strType = String.join(",", types);
+                                    String strProvince = String.join(",", provinces);
+                                    String strCity = String.join(",", citys);
+                                    String strProvinceCity = JSON.toJSONString(provinceCityMap);
+                                    insertVal("type", strType);
+                                    insertVal("province", strProvince);
+                                    insertVal("city", strCity);
+                                    insertVal("provinceCity", strProvinceCity);
+                                }
+
+                                @Override
+                                public void onFailure(Exception error) {
+                                    // 处理失败情况
+                                }
+                            });
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+    public static Context getAppContext() {
+        return sContext;
+    }
+
+    private void showChangeIPDialog(Context context, Runnable onConfirm) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("请输入IP地址");
+        builder.setMessage("当前IP地址:"+ApiConfig.BASE_URL("0"));
+        final EditText etIP = new EditText(context);
+        builder.setView(etIP);
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            ApiConfig.BASE_URL(etIP.getText().toString());
+            if (onConfirm != null) {
+                onConfirm.run();
+            }
+            dialog.dismiss();
+        });
+
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void isShowPassword() {
@@ -166,7 +207,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-
+                Looper.prepare();
+                Toast.makeText(MainActivity.this, "超时", Toast.LENGTH_SHORT).show();
+                Looper.loop();
             }
         });
     }
@@ -228,12 +271,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected String findByKey(String key) {
+    public String findByKey(String key) {
         SharedPreferences sp = getSharedPreferences("sp_config", MODE_PRIVATE);
         return sp.getString(key, "");
     }
 
-    protected void insertVal(String key, String value) {
+    public void insertVal(String key, String value) {
         SharedPreferences sp = getSharedPreferences("sp_config", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);

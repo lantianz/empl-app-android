@@ -86,9 +86,7 @@ public class MineFragment extends BaseFragment {
         builder.setTitle("关于APP");
 
         String introduction =
-                "这是一个毕业生就业信息管理系统学生端的APP。" +
-                        "阅览相关的、感兴趣的就业资讯；" +
-                        "提交就业信息到Web管理端。";
+                "这是一个毕业生就业信息管理系统学生端的APP。\n阅览相关的、感兴趣的就业资讯；\n提交就业信息到Web管理端。";
 
         builder.setMessage(introduction);
 
