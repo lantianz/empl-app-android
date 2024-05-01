@@ -206,13 +206,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/rl_link"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/shape_white_frame"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp">
